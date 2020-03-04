@@ -1,4 +1,5 @@
 //import shit
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
@@ -135,6 +136,19 @@ public class BlastAnalyzer {
             blastFileIn.close();
             fw.close();
             System.out.println("Data analyzed! Check the output.txt file for the result.");
+        } catch (NoSuchElementException ne) {
+            System.out.print(
+                    "Looks like the blast.txt file is empty, or not formatted correctly!\n");
+            System.out.print("Now, to fail gracefully.\n");
+            fw.write("No data analyzed!\n");
+            String end = String.format(
+                    "The program found %d differences between the query phage %s and the subject phage %s.\n",
+                    diffCounter, queryName, subjectName);
+            fw.write(end);
+            fw.write("-------------------------------------------------------------------------\n\n\n");
+            blastFileIn.close();
+            fw.close();
+            System.out.println("Check the output.txt file for the result.");
         }
 
     }
