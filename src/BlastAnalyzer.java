@@ -1,4 +1,4 @@
-//import shit
+//import things
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.io.File;
@@ -42,7 +42,7 @@ public class BlastAnalyzer {
 
     }
 
-    public static void fileReader(File f, String queryName, String subjectName) throws IOException {
+    public static void fileReader(File f, String queryName, String subjectName) throws IOException, NoSuchElementException, StringIndexOutOfBoundsException {
         File blast = f;
         Scanner blastFileIn = null;
         FileWriter fw = null;
@@ -83,11 +83,12 @@ public class BlastAnalyzer {
                     ++lineCounter;
                 }
 
-                lineLength = 60;
+                lineLength = 59;
 
                 // skip line, read in query genome
                 blastLine = blastFileIn.nextLine();
                 ++lineCounter;
+                spotCounter = Integer.parseInt(blastLine.substring(7, 13).trim());
                 queryGenome = blastLine.substring(13, 13 + lineLength);
 
                 // skip a line
@@ -114,7 +115,7 @@ public class BlastAnalyzer {
                         if (queryGenome.charAt(i) == subjectGenome.charAt(i)) {
                             // do nothing
                         } else {
-                            fw.write("at spot " + i + "\n");
+                            fw.write("at spot " + (i + 1) + "\n");
                             diffCounter++;
                         }
                     }
@@ -129,7 +130,7 @@ public class BlastAnalyzer {
             System.out.print("Now, to fail gracefully.\n");
             fw.write("Data analyzed!\n");
             String end = String.format(
-                    "The program found %d differences between the query phage %s and the subject phage %s.\n",
+                    "The program found %d difference(s) between the query phage %s and the subject phage %s.\n",
                     diffCounter, queryName, subjectName);
             fw.write(end);
             fw.write("-------------------------------------------------------------------------\n\n\n");
